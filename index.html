@@ -1,0 +1,25 @@
+ <html>
+    <script src="https://cdn.jsdelivr.net/npm/ruby-head-wasm-wasi@latest/dist/browser.umd.js"></script>
+    <script>
+      const { DefaultRubyVM } = window["ruby-wasm-wasi"];
+      const main = async () => {
+        // Fetch and instntiate WebAssembly binary
+        const response = await fetch(
+          "https://cdn.jsdelivr.net/npm/ruby-head-wasm-wasi@latest/dist/ruby.wasm"
+        );
+        const buffer = await response.arrayBuffer();
+        const module = await WebAssembly.compile(buffer);
+        const { vm } = await DefaultRubyVM(module);
+
+        vm.printVersion();
+        vm.eval(`
+          require "js"
+          luckiness = ["Lucky", "Unlucky"].sample
+          JS::eval("document.body.innerText = '#{luckiness}'")
+        `);
+      };
+
+      main();
+    </script>
+    <body></body>
+  </html>
