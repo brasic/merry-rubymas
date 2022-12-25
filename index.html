@@ -14,8 +14,20 @@
         vm.printVersion();
         vm.eval(`
           require "js"
-          luckiness = ["Lucky", "Unlucky"].sample
-          JS::eval("document.body.innerText = '#{luckiness}'")
+          require "time"
+          require "stringio"
+          $stdout = StringIO.new
+          puts "Ho ho ho!"
+          puts "Ruby version: #{RUBY_VERSION}"
+          puts "Ruby platform: #{RUBY_PLATFORM}"
+          puts "Ruby engine: #{RUBY_ENGINE}"
+          puts "Ruby engine version: #{RUBY_ENGINE_VERSION}"
+          puts "Ruby description: #{RUBY_DESCRIPTION}"
+          puts "Ruby patchlevel: #{RUBY_PATCHLEVEL}"
+          puts "Ruby revision: #{RUBY_REVISION}"
+          puts "Ruby release date: #{RUBY_RELEASE_DATE}"
+          puts "current time is #{Time.now.iso8601}"
+          JS::eval("document.body.innerText = #{$stdout.string.inspect}")
         `);
       };
 
